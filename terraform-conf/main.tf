@@ -43,7 +43,7 @@ resource "aws_s3_bucket" "lambda_bucket" {
 
 # Lambda Function
 resource "aws_lambda_function" "example" {
-  function_name = "example_lambda_function"
+  function_name = "lambda_function"
   role          = data.aws_iam_role.existing_lambda_role.arn
   handler       = "lambda_function.lambda_handler"
   s3_bucket        = aws_s3_bucket.lambda_bucket.bucket
