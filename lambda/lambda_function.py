@@ -48,13 +48,3 @@ def lambda_handler(event, context):
     # Print output to CloudWatch Logs
     print(output_text)
 
-    # Return the response as JSON (optional)
-    return {
-        "statusCode": 200,
-        "body": json.dumps({
-            "repository_name": repository_name,
-            "pull_request_number": pull_request_number,
-            "modified_files": [{"filename": file.get("filename", "Unknown File"), "status": file.get("status", "Unknown Status")} for file in pr_files]
-        })
-    }
-
