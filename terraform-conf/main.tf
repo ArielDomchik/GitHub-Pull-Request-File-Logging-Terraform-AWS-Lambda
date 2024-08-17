@@ -48,7 +48,7 @@ resource "aws_lambda_function" "example" {
   handler       = "lambda_function.lambda_handler"
   s3_bucket        = aws_s3_bucket.lambda_bucket.bucket
   s3_key           = "lambda_function.zip"
-  runtime       = "python3.8"
+  runtime       = "python3.10"
 }
 
 
