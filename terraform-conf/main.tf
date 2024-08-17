@@ -41,14 +41,28 @@ resource "aws_s3_bucket" "lambda_bucket" {
 }
 
 
+resource "aws_s3_bucket_object" "lambda_package" {
+  bucket = aws_s3_bucket.lambda_bucket.bucket
+  key    = "my_deployment.zip"
+  source = "${path.module}/lambda/my_deployment.zip" 
+}
+
+
 # Lambda Function
 resource "aws_lambda_function" "example" {
   function_name = "lambda_function"
   role          = data.aws_iam_role.existing_lambda_role.arn
   handler       = "lambda_function.lambda_handler"
   s3_bucket        = aws_s3_bucket.lambda_bucket.bucket
-  s3_key           = "lambda_function.zip"
+  s3_key           = "my_deployment.zip"
   runtime       = "python3.10"
+
+  environment {
+    variables = {
+      GITHUB_TOKEN = var.github_token
+    }
+  }
+
 }
 
 
