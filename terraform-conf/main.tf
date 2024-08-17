@@ -54,7 +54,7 @@ resource "aws_lambda_function" "example" {
   role          = data.aws_iam_role.existing_lambda_role.arn
   handler       = "lambda_function.lambda_handler"
   s3_bucket        = aws_s3_bucket.lambda_bucket.bucket
-  s3_key           = "my_deployment.zip"
+  s3_key           = aws_s3_bucket_object.lambda_package.key
   runtime       = "python3.10"
 
   environment {
@@ -102,6 +102,14 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   stage_name  = "prod"
 }
 
+
+resource "aws_lambda_permission" "allow_api_gateway" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.example.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_deployment.api_deployment.execution_arn}/*/*"
+}
 
 # GitHub Repository
 resource "github_repository" "example" {
