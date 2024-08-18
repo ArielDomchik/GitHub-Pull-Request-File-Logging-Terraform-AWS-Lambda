@@ -64,7 +64,7 @@ The Lambda function processes incoming GitHub webhook events to log details of p
 
 ### Lambda Code
 
-The Lambda function is defined in `lambda_latest.py` and is packaged into a deployment zip file. Ensure that your Lambda code correctly handles GitHub payloads.
+The Lambda function is defined in `lambda_function.py` and is packaged into a deployment zip file. Ensure that your Lambda code correctly handles GitHub payloads.
 
 ## API Gateway
 
