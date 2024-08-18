@@ -40,8 +40,8 @@ resource "aws_s3_bucket" "lambda_bucket" {
 
 resource "aws_s3_bucket_object" "lambda_package" {
   bucket = aws_s3_bucket.lambda_bucket.bucket
-  key    = "my_deployment_new.zip"
-  source = "${path.module}/lambda/my_deployment_new.zip" 
+  key    = "lambda_deployment.zip"
+  source = "${path.module}/lambda/lambda_deployment.zip" 
 }
 
 
@@ -63,22 +63,13 @@ resource "aws_iam_role_policy" "lambda_s3_policy" {
   })
 }
 
-
-data "archive_file" "lambda" {
-  type        = "zip"
-  source_file = "lambda_latest.py"
-  output_path = "my_deployment_new.zip"
-}
-
 # Lambda Function
 resource "aws_lambda_function" "example" {
   function_name = "lambda_function"
   role          = data.aws_iam_role.existing_lambda_role.arn
-  handler       = "lambda_latest.lambda_handler"
+  handler       = "lambda_function.lambda_handler"
   s3_bucket        = aws_s3_bucket.lambda_bucket.bucket
   s3_key           = aws_s3_bucket_object.lambda_package.key
- # filename     = "my_deployment.zip"
- # source_code_hash = data.archive_file.lambda.output_base64sha256
   runtime       = "python3.10"
 
   environment {
