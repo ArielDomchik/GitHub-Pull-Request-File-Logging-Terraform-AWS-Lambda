@@ -123,7 +123,7 @@ resource "aws_lambda_permission" "allow_api_gateway" {
 
 #GitHub resources
 resource "github_repository" "example" {
-  name        = "Checkpoint"
+  name        = "GitHub-Pull-Request-File-Logging-Terraform-AWS-Lambda"
   description = "Log pull request files and repository name"
   visibility  = "private"
 }
