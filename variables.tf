@@ -6,6 +6,6 @@ variable "github_token" {
 variable "aws_region" {
   description = "AWS Region"
   type        = string
-  default     = "us-west-1"
+  default     = "us-west-2"
 }
 
