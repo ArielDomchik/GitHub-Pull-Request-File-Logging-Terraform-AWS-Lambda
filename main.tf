@@ -27,11 +27,7 @@ provider "github" {
   token = var.github_token
 }
 
-
-# Create IAM Role for Lambda
-
-
-# Create a temporary file with the Lambda code
+#S3 Resources
 resource "aws_s3_bucket" "lambda_bucket" {
   bucket = "checkpoint-assignment-lambda-role"
   acl    = "private"
@@ -45,6 +41,7 @@ resource "aws_s3_bucket_object" "lambda_package" {
 }
 
 
+#Lambda resources
 resource "aws_iam_role_policy" "lambda_s3_policy" {
   name = "lambda-s3-policy"
   role = data.aws_iam_role.existing_lambda_role.id
@@ -63,7 +60,6 @@ resource "aws_iam_role_policy" "lambda_s3_policy" {
   })
 }
 
-# Lambda Function
 resource "aws_lambda_function" "example" {
   function_name = "lambda_function"
   role          = data.aws_iam_role.existing_lambda_role.arn
@@ -81,9 +77,7 @@ resource "aws_lambda_function" "example" {
 }
 
 
-
-# API Gateway setup
-
+#API Gateway resources
 resource "aws_api_gateway_rest_api" "github_webhook_api" {
   name        = "github-webhook-api"
   description = "API for GitHub webhook"
@@ -127,14 +121,13 @@ resource "aws_lambda_permission" "allow_api_gateway" {
   source_arn    = "${aws_api_gateway_deployment.api_deployment.execution_arn}/*/*"
 }
 
-# GitHub Repository
+#GitHub resources
 resource "github_repository" "example" {
   name        = "Checkpoint"
   description = "Log pull request files and repository name"
   visibility  = "private"
 }
 
-# GitHub Webhook for Pull Request events
 resource "github_repository_webhook" "example" {
   repository = github_repository.example.name
   configuration {
